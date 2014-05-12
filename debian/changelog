@@ -1,3 +1,16 @@
+openssl (1.0.1g-3) unstable; urgency=medium
+
+  * Fix CVE-2010-5298: use-after-free race condition.
+  * Propose restarting prosody on upgrade (Closes: #744871).
+  * Add more services to be checked for restart.
+  * Fix a bug where the critical flag for TSA extended key usage is not
+    always detected, and two other similar cases.
+  * Add support for 'libraries/restart-without-asking', which allows
+    services to be restarted automatically without prompting, or
+    requiring a response instead.
+
+ -- Kurt Roeckx <kurt@roeckx.be>  Sat, 19 Apr 2014 18:38:32 +0200
+
 openssl (1.0.1g-2) unstable; urgency=emergency
 
   * Enable checking for services that may need to be restarted (Closes: #743889)
