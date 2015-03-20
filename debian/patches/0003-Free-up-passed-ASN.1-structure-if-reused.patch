@@ -1,0 +1,75 @@
+From 1a87b757b9f755f687492f6b9f685be8e0cd82b0 Mon Sep 17 00:00:00 2001
+From: "Dr. Stephen Henson" <steve@openssl.org>
+Date: Mon, 23 Feb 2015 12:57:50 +0000
+Subject: [PATCH 3/6] Free up passed ASN.1 structure if reused.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Change the "reuse" behaviour in ASN1_item_d2i: if successful the old
+structure is freed and a pointer to the new one used. If it is not
+successful then the passed structure is untouched.
+
+Exception made for primitive types so ssl_asn1.c still works.
+
+Reviewed-by: Tim Hudson <tjh@openssl.org>
+Reviewed-by: Emilia Käsper <emilia@openssl.org>
+---
+ crypto/asn1/tasn_dec.c  | 14 ++++++++++----
+ doc/crypto/d2i_X509.pod |  9 +++++++--
+ 2 files changed, 17 insertions(+), 6 deletions(-)
+
+Index: openssl-1.0.1e/crypto/asn1/tasn_dec.c
+===================================================================
+--- openssl-1.0.1e.orig/crypto/asn1/tasn_dec.c
++++ openssl-1.0.1e/crypto/asn1/tasn_dec.c
+@@ -130,11 +130,17 @@ ASN1_VALUE *ASN1_item_d2i(ASN1_VALUE **p
+ 	{
+ 	ASN1_TLC c;
+ 	ASN1_VALUE *ptmpval = NULL;
+-	if (!pval)
+-		pval = &ptmpval;
+ 	asn1_tlc_clear_nc(&c);
+-	if (ASN1_item_ex_d2i(pval, in, len, it, -1, 0, 0, &c) > 0) 
+-		return *pval;
++        if (pval && *pval && it->itype == ASN1_ITYPE_PRIMITIVE)
++            ptmpval = *pval;
++        if (ASN1_item_ex_d2i(&ptmpval, in, len, it, -1, 0, 0, &c) > 0) {
++            if (pval && it->itype != ASN1_ITYPE_PRIMITIVE) {
++                if (*pval)
++                    ASN1_item_free(*pval, it);
++                *pval = ptmpval;
++            }
++            return ptmpval;
++        }
+ 	return NULL;
+ 	}
+ 
+Index: openssl-1.0.1e/doc/crypto/d2i_X509.pod
+===================================================================
+--- openssl-1.0.1e.orig/doc/crypto/d2i_X509.pod
++++ openssl-1.0.1e/doc/crypto/d2i_X509.pod
+@@ -199,6 +199,12 @@ B<*px> is valid is broken and some parts
+ persist if they are not present in the new one. As a result the use
+ of this "reuse" behaviour is strongly discouraged.
+ 
++Current versions of OpenSSL will not modify B<*px> if an error occurs.
++If parsing succeeds then B<*px> is freed (if it is not NULL) and then
++set to the value of the newly decoded structure. As a result B<*px>
++B<must not> be allocated on the stack or an attempt will be made to
++free an invalid pointer.
++
+ i2d_X509() will not return an error in many versions of OpenSSL,
+ if mandatory fields are not initialized due to a programming error
+ then the encoded structure may contain invalid data or omit the
+@@ -210,7 +216,9 @@ always succeed.
+ 
+ d2i_X509(), d2i_X509_bio() and d2i_X509_fp() return a valid B<X509> structure
+ or B<NULL> if an error occurs. The error code that can be obtained by
+-L<ERR_get_error(3)|ERR_get_error(3)>. 
++L<ERR_get_error(3)|ERR_get_error(3)>.  If the "reuse" capability has been used
++with a valid X509 structure being passed in via B<px> then the object is not
++modified in the event of error.
+ 
+ i2d_X509() returns the number of bytes successfully encoded or a negative
+ value if an error occurs. The error code can be obtained by

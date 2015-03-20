@@ -1,3 +1,17 @@
+openssl (1.0.1k-2) unstable; urgency=high
+
+  * Fix CVE-2015-0286
+  * Fix CVE-2015-0287
+  * Fix CVE-2015-0289
+  * Fix CVE-2015-0293 (not affected, SSLv2 disabled)
+  * Fix CVE-2015-0209
+  * Fix CVE-2015-0288
+  * Remove export ciphers from DEFAULT.
+  * Make DTLS always act as if read_ahead is set.  This fixes a regression
+    introduce by the fix for CVE-2014-3571.  (Closes: #775502)
+
+ -- Kurt Roeckx <kurt@roeckx.be>  Fri, 20 Mar 2015 18:24:15 +0100
+
 openssl (1.0.1k-1) unstable; urgency=medium
 
   * New upstream version
