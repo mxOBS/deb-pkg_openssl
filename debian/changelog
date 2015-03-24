@@ -1,3 +1,10 @@
+openssl (1.0.1k-3) unstable; urgency=medium
+
+  * Drop patch 0003-Free-up-passed-ASN.1-structure-if-reused.patch, it at
+    least breaks voms, possibly others. (Closes: #781081)
+
+ -- Kurt Roeckx <kurt@roeckx.be>  Tue, 24 Mar 2015 21:34:00 +0100
+
 openssl (1.0.1k-2) unstable; urgency=high
 
   * Fix CVE-2015-0286
