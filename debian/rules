@@ -47,6 +47,9 @@ build-arch: build-stamp
 build-indep: build-stamp
 build-stamp:
 	dh_testdir
+	mkdir -p include/openssl/
+	touch include/openssl/idea.h
+	touch include/openssl/mdc2.h
 #	perl util/ssldir.pl /usr/lib/ssl
 #	chmod +x debian/libtool
 	./Configure no-shared $(CONFARGS) debian-$(DEB_HOST_ARCH)
