@@ -1,3 +1,10 @@
+openssl (1.0.1s-1+deb8u1) UNRELEASED; urgency=medium
+
+  * Update to 1.0.1s stable release (drop applied patches and refresh existing
+    ones).
+
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Sun, 01 May 2016 21:05:30 +0200
+
 openssl (1.0.1k-3+deb8u4) jessie-security; urgency=medium
 
   * Fix CVE-2016-0797
