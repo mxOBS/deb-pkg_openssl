@@ -220,7 +220,7 @@ openssl (1.0.1e-5) unstable; urgency=low
   * Drop support for multiple certificates in 1 file.  It never worked
     properly in the first place, and the only one shipping in
     ca-certificates has been split.
-  * Fix libdoc-manpgs-pod-spell.patch to only fix spalling errors
+  * Fix libdoc-manpgs-pod-spell.patch to only fix spelling errors
   * Remove make-targets.patch.  It prevented the test dir from being cleaned.
   * Update to a git snapshot of the OpenSSL_1_0_1-stable branch. 
     - Fixes CVE-2013-6449 (Closes: #732754)
