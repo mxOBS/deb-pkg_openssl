@@ -1,5 +1,6 @@
-openssl (1.0.1t-1+deb8u1) UNRELEASED; urgency=medium
+openssl (1.0.1t-1+deb8u1) jessie; urgency=medium
 
+  [ Sebastian Andrzej Siewior ]
   * Update to 1.0.1t stable release (drop applied patches and refresh existing
     ones).
     - Use alternate trust chains part of 1.0.1n (Closes: #774882).
@@ -7,7 +8,7 @@ openssl (1.0.1t-1+deb8u1) UNRELEASED; urgency=medium
     - Fix CVE-2015-3197 (not affected, SSLv2 disabled)
     - Fix CVE-2015-1793 (1.0.1n+ is affected and last upload was k)
 
- -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Sun, 01 May 2016 21:05:30 +0200
+ -- Kurt Roeckx <kurt@roeckx.be>  Fri, 06 May 2016 15:56:09 +0200
 
 openssl (1.0.1k-3+deb8u5) jessie-security; urgency=medium
 
