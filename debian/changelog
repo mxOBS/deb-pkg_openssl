@@ -7,6 +7,8 @@ openssl (1.0.1t-1+deb8u1) jessie; urgency=medium
     - Use correct digest when exporting keying material (Closes: #807057)
     - Fix CVE-2015-3197 (not affected, SSLv2 disabled)
     - Fix CVE-2015-1793 (1.0.1n+ is affected and last upload was k)
+  * add Update-S-MIME-certificates.patch to update expired certificates to
+    pass the test suite
 
  -- Kurt Roeckx <kurt@roeckx.be>  Fri, 06 May 2016 15:56:09 +0200
 

@@ -19,3 +19,4 @@ block_digicert_malaysia.patch
 defaults.patch
 openssl_fix_for_x32.patch
 ppc64el.patch
+Update-S-MIME-certificates.patch
