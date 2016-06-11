@@ -1,3 +1,10 @@
+openssl (1.0.1t-1+deb8u3) jessie; urgency=medium
+
+  * Disable SSLv2 methods again, changes upstream has split no-ssl2 into
+    no-ssl2 and no-ssl2-method
+
+ -- Kurt Roeckx <kurt@roeckx.be>  Sat, 11 Jun 2016 18:58:08 +0200
+
 openssl (1.0.1t-1+deb8u2) jessie; urgency=medium
 
   * add Update-S-MIME-certificates.patch to update expired certificates to
