@@ -12,6 +12,7 @@ openssl (1.0.2i-1) unstable; urgency=medium
     - Fix CVE-2016-6303
     - Fix CVE-2016-6304
     - Fix CVE-2016-6306
+  - Drop ca.patch, option is now documented upstream
 
  -- Kurt Roeckx <kurt@roeckx.be>  Thu, 22 Sep 2016 18:56:37 +0200
 
