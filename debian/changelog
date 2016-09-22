@@ -12,9 +12,11 @@ openssl (1.0.2i-1) unstable; urgency=high
     - Fix CVE-2016-6303
     - Fix CVE-2016-6304
     - Fix CVE-2016-6306
-  - Drop ca.patch, option is now documented upstream
+  * Drop ca.patch, option is now documented upstream
+  * Update engines-path.patch to also update the libcrypto.pc, now that that
+    has an enginesdir in it.
 
- -- Kurt Roeckx <kurt@roeckx.be>  Thu, 22 Sep 2016 18:56:37 +0200
+ -- Kurt Roeckx <kurt@roeckx.be>  Thu, 22 Sep 2016 19:39:36 +0200
 
 openssl (1.0.2h-2) unstable; urgency=medium
 
