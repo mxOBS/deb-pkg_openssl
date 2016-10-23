@@ -4,3 +4,7 @@ doc/openssl.txt
 doc/README
 doc/standards.txt
 FAQ
+CHANGES.SSLeay
+README
+NEWS
+debian/README.optimization

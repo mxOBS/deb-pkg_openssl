@@ -1,3 +1,15 @@
+openssl (1.0.2j-2) UNRELEASED; urgency=medium
+
+  * redo the rules file to some newer debhelper:
+    - everyfile should remain, nothing should get lost
+    - the scripts in the doc package gained an exec bit
+    - openssl gained a dep on perl (the package contains perl scripts)
+    - libssl1.0.2-dbg is gone, we have dbgsym now
+    - dh compat 10
+    - pkg.install instead of pkg.files is used for install
+
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Sun, 23 Oct 2016 22:09:41 +0200
+
 openssl (1.0.2j-1) unstable; urgency=medium
 
   * New upstream release

@@ -41,11 +41,12 @@ ifneq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	MAKE_TEST = :
 endif
 
-build: build-arch build-indep
-build-arch: build-stamp
-build-indep: build-stamp
-build-stamp:
-	dh_testdir
+%:
+	dh $@ --without autoreconf
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
 #	perl util/ssldir.pl /usr/lib/ssl
 #	chmod +x debian/libtool
 	./Configure no-shared $(CONFARGS) debian-$(DEB_HOST_ARCH)
@@ -75,12 +76,11 @@ build-stamp:
 #	make -f Makefile clean
 #	./Configure --prefix=/usr --openssldir=/usr/lib/ssl no-idea no-mdc2 no-rc5 debian-$(DEB_HOST_ARCH)
 #	make -f Makefile all
-	touch build-stamp
 
-clean:
-	dh_testdir
-	dh_testroot
-	-rm -f build-stamp
+# we test as part of the build
+override_dh_auto_test:
+
+override_dh_auto_clean:
 	-./Configure $(CONFARGS) debian-$(DEB_HOST_ARCH)
 	[ ! -f Makefile ] || make -f Makefile  clean clean-shared
 	#-make -f Makefile  dclean
@@ -101,34 +101,9 @@ clean:
 	rm -f certs/demo/*.0
 	rm -rf crypto/aes/aes-armv4.S crypto/bn/armv4-gf2m.S crypto/modes/ghash-armv4.S crypto/sha/*.S
 	find . -type l -exec rm '{}' \;
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean
-	dh_installdirs
+ 
+override_dh_auto_install:
 	make -f Makefile install INSTALL_PREFIX=`pwd`/debian/tmp
-
-binary-indep:	build install
-	dh_testdir
-	dh_testroot
-	dh_installdirs -i
-	dh_installman -plibssl-doc
-	dh_installdocs -i
-	dh_movefiles -i
-	dh_installchangelogs -i CHANGES
-	dh_compress -i
-	dh_fixperms -i
-	dh_gencontrol -i
-	dh_installdeb -i
-	dh_md5sums -i
-	dh_builddeb -i
-
-binary-arch:	build install
-	dh_testdir
-	dh_testroot
-	dh_installdirs -a
 	# pic static libraries, nobody should need them
 #	mv debian/tmp/usr/lib/libcrypto.a debian/tmp/usr/lib/libcrypto_pic.a
 #	mv debian/tmp/usr/lib/libssl.a debian/tmp/usr/lib/libssl_pic.a
@@ -140,38 +115,25 @@ binary-arch:	build install
 	cp -pf debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/libcrypto.so.* debian/libcrypto1.0.2-udeb/usr/lib/
 	cp -pf debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/libssl.so.* debian/libssl1.0.2-udeb/usr/lib/
 	cp -auv lib*.so* debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/
-	for opt in $(OPTS); do set -xe; mkdir -p debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/$$opt; cp -auv $$opt/lib*.so* debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/$$opt/; done
+	for opt in $(OPTS); \
+		do set -xe; \
+		mkdir -p debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/$$opt; \
+		cp -auv $$opt/lib*.so* debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/$$opt/; \
+	done
 	mkdir -p debian/tmp/usr/include/$(DEB_HOST_MULTIARCH)/openssl
 	mv debian/tmp/usr/include/openssl/opensslconf.h debian/tmp/usr/include/$(DEB_HOST_MULTIARCH)/openssl/
-	install debian/copyright debian/libssl1.0.2/usr/share/doc/libssl1.0.2/
-	install debian/changelog debian/libssl1.0.2/usr/share/doc/libssl1.0.2/changelog.Debian
-	install debian/copyright debian/libssl-dev/usr/share/doc/libssl-dev/
-	install debian/changelog debian/libssl-dev/usr/share/doc/libssl-dev/changelog.Debian
 
-	dh_installdocs -a CHANGES.SSLeay README NEWS debian/README.optimization
-	dh_installexamples -a
+override_dh_installchangelogs-binary:
 	dh_installchangelogs -a CHANGES
-	dh_installman -popenssl
-	dh_installdebconf -a
-	dh_movefiles -a
-	dh_compress -a
+
+override_dh_fixperms:
 	chmod 700 debian/openssl/etc/ssl/private
 	dh_fixperms -a -X etc/ssl/private
-	dh_strip -plibssl1.0.2 --dbg-package=libssl1.0.2-dbg
-	dh_strip -a -Nlibssl1.0.2
-	dh_perl -a -d
-	dpkg-gensymbols -Pdebian/libssl1.0.2/ -plibssl1.0.2 -c4
-	dh_makeshlibs -a -V "libssl1.0.2" --add-udeb="libcrypto1.0.2-udeb" -Xengines
+
+override_dh_makeshlibs:
+	#dpkg-gensymbols -Pdebian/libssl1.0.2/ -plibssl1.0.2 -c4
+	dh_makeshlibs -a --add-udeb="libcrypto1.0.2-udeb" -Xengines
+
+override_dh_shlibdeps:
 	sed -i '/^udeb: libssl/s/libcrypto1.0.2-udeb/libssl1.0.2-udeb/' debian/libssl1.0.2/DEBIAN/shlibs
-	dh_shlibdeps -a -L libssl1.0.2 -l debian/libssl1.0.2/usr/lib/$(DEB_HOST_MULTIARCH)
-	dh_gencontrol -a
-	dh_installdeb -a
-	dh_md5sums -a
-	dh_builddeb -a
-	echo -en "\a"
-
-# Below here is fairly generic really
-
-binary:		binary-indep binary-arch
-
-.PHONY: binary binary-arch binary-indep clean install
+	dh_shlibdeps -a -L libssl1.0.2
