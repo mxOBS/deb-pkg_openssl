@@ -102,6 +102,7 @@ clean:
 	rm -f certs/demo/*.0
 	rm -rf crypto/aes/aes-armv4.S crypto/bn/armv4-gf2m.S crypto/modes/ghash-armv4.S crypto/sha/*.S
 	find . -type l -exec rm '{}' \;
+	rm -f test/evptests.txt
 	dh_clean
 
 install: build
