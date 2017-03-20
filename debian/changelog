@@ -1,3 +1,9 @@
+openssl (1.0.1t-1+deb8u6cd1) jessie-security; urgency=medium
+
+  * enable cryptodev support
+
+ -- Josua Mayer <josua.mayer97@gmail.com>  Mon, 20 Mar 2017 16:52:07 +0100
+
 openssl (1.0.1t-1+deb8u6) jessie-security; urgency=medium
 
   * Fix CVE-2016-8610
