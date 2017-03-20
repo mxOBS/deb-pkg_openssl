@@ -7,7 +7,7 @@
 
 --- a/Configure
 +++ b/Configure
-@@ -1635,6 +1635,8 @@ if ($strict_warnings)
+@@ -1657,6 +1657,8 @@
  		}
  	}
  

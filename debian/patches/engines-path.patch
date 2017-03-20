@@ -7,7 +7,7 @@
 
 --- a/Configure
 +++ b/Configure
-@@ -1866,7 +1866,7 @@ while (<IN>)
+@@ -1888,7 +1888,7 @@
  		}
  	elsif	(/^#define\s+ENGINESDIR/)
  		{
@@ -18,7 +18,7 @@
  		}
 --- a/Makefile.org
 +++ b/Makefile.org
-@@ -543,7 +543,7 @@ install: all install_docs install_sw
+@@ -533,7 +533,7 @@
  install_sw:
  	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \
  		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR) \
@@ -29,7 +29,7 @@
  		$(INSTALL_PREFIX)$(OPENSSLDIR)/misc \
 --- a/engines/Makefile
 +++ b/engines/Makefile
-@@ -107,7 +107,7 @@ lib:	$(LIBOBJ)
+@@ -107,7 +107,7 @@
  	@[ -n "$(INSTALLTOP)" ] # should be set by top Makefile...
  	@if [ -n "$(SHARED_LIBS)" ]; then \
  		set -e; \
@@ -38,7 +38,7 @@
  		for l in $(LIBNAMES); do \
  			( echo installing $$l; \
  			  pfx=lib; \
-@@ -119,13 +119,13 @@ lib:	$(LIBOBJ)
+@@ -119,13 +119,13 @@
  				*DSO_WIN32*)	sfx="eay32.dll"; pfx=;;	\
  				*)		sfx=".bad";;	\
  				esac; \
@@ -58,7 +58,7 @@
  	@target=install; $(RECURSIVE_MAKE)
 --- a/engines/ccgost/Makefile
 +++ b/engines/ccgost/Makefile
-@@ -53,13 +53,13 @@ lib: $(LIBOBJ)
+@@ -53,13 +53,13 @@
  			*DSO_WIN32*) sfx="eay32.dll"; pfx=;; \
  			*) sfx=".bad";; \
  			esac; \
