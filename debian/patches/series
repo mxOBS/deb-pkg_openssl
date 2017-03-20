@@ -35,3 +35,5 @@ CVE-2016-6306.patch
 CVE-2016-8610.patch
 CVE-2017-3731.patch
 CVE-2016-7056.patch
+0001-cryptodev-Fix-issue-with-signature-generation.patch
+0002-cryptodev-allow-copying-EVP-contexts.patch
